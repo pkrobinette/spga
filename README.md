@@ -18,7 +18,6 @@ The code base is structured as follows:
     └── knapsack        # Knapsack-v0
  ```
     
-It should describe the steps to set up your artifact, i.e., how to boot the VM image or how to start the Docker container.
 ## Installation
 1. Navigate to the AAAI_SPGA directory
 2. Run:
@@ -27,16 +26,15 @@ conda env create -f environment.yml
 conda activate spga
 ```
  
-Document in detail how to replicate your results of the paper.
 ## Replication
 ### xSpeedUp
 To reproduce the xSpeedUp results shown in Table 2, run the `Generate Table 2.ipynb` file (~30 sec.).
 
 ### Agent Rollout Plots
-To reproduce the rollout plots shown in the graph, navigate to the respective directory and run the respective` *plot*.ipynb` file. For instance, if you want to reproduce the CartPole-v0 action masking plots, navigate to `action_masking` > `cpole` directory and run `plot_cpole_amask_rollouts.ipynb`. The time to plot is environment dependent. Each plot .ipynb, however, takes less than 10 min. to run.
+To reproduce the rollout plots shown in the graph, navigate to the respective directory and run the respective` *plot*.ipynb` file. For instance, if you want to reproduce the CartPole-v0 action masking plots, navigate to `action_masking` > `cpole` directory and run `plot_cpole_amask_rollouts.ipynb`. The time to plot is environment dependent. Each plot .ipynb, however, takes approximately less than 10 min. to run.
 
 ### Agent Training (not necessary)
-To reproduce the training of each SPGA and SRL agent in their respective environment, navigate to the environment and method in question and run the `./train_spga.sh` or `./train_srl.sh` bash script. This will run the safe learning method for each version of that environment. Time to train is environment dependent. Estimates of total training time are shown below. Because the training can take a long time, the trained agents for each respective environment are provided in each directory.
+To reproduce the training of each SPGA and SRL agent in their respective environment, navigate to the environment and method in question and run the `./train_spga.sh` or `./train_srl.sh` bash script. This will run the safe learning method for each version of that environment. Time to train is environment dependent. Estimates of total training time are shown below. Because the training can take a long time, the trained agents for each respective test seed (SEED 4) are provided in each directory. Seed implementations used in this work during training are automatically integrated into the code.
 
 *Note:* These are very rough estimates
 | Environment | Safe Learning Method | Time to Run File |
