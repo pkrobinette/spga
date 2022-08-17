@@ -24,7 +24,7 @@ It should describe the steps to set up your artifact, i.e., how to boot the VM i
 2. Run:
 ```bash
 conda env create -f environment.yml
-conda activate 
+conda activate spga
 ```
  
 Document in detail how to replicate your results of the paper.
