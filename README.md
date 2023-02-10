@@ -1,4 +1,4 @@
-# Self-Preserving Genetic Algoriths for Safe Learning in Discrete Action Spaces
+# Self-Preserving Genetic Algorithms for Safe Learning in Discrete Action Spaces
 This code base implements self-preserving genetic algorithms (SPGA) and safe reinforcement learning (SRL) and provides a comparison of the safe learning methods in three different discrete action environments:
 1. CartPole-v0 (OpenAI Gym)
 2. FrozenLake-v1 (OpenAI Gym)
