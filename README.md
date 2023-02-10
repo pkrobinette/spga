@@ -45,9 +45,24 @@ conda env create -f environment.yml
 conda activate spga
 ```
 
-## Replication
-### xSpeedUp
+## ICCPS '23 Artifact Evaluation
+This artifact is intended to reproduce each of the plots/figures included in the corresponding ICCPS '23 paper. The tables/figures are listed in chronological order, starting with tables.
+
+### Table 2: Analysis of Self-Preserving Genetic Algorithms and Safe Reinforcement Learning
 To reproduce the xSpeedUp results shown in Table 2, run the `Generate Table 2.ipynb` file (~30 sec.).
+
+### Table 3: Geometric Mean xSpeedUp of SPGA vs. SRL 
+
+---
+
+### Figure 2: CartPole-v0 SPGA-AM vs. SRL-AM Results
+
+### Figure 3: FrozenLake-v1 SPGA-AM vs. SRL-AM Results
+
+### Figure 4: Knapsack-v0 SPGA-RTA vs. SRL-RTA
+
+## Agent Training
+
 
 ### Agent Rollout Plots
 To reproduce the rollout plots shown in the graph, navigate to the respective directory and run the respective` *plot*.ipynb` file. For instance, if you want to reproduce the CartPole-v0 action masking plots, navigate to `action_masking` > `cpole` directory and run `plot_cpole_amask_rollouts.ipynb`. The time to plot is environment dependent. Each plot .ipynb, however, takes approximately less than 10 min. to run.
