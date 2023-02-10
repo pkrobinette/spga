@@ -19,23 +19,52 @@ The code base is structured as follows:
  ```
     
 ## Installation
-1. Navigate to the AAAI_SPGA directory
-2. Run:
+Clone this repository to your local machine.
+```bash
+git clone https://github.com/pkrobinette/spga.git
+cd spga
+```
+
+### Option 1: Docker (recommended for ICCPS'23 AE)
+1. Build the Docker image
+```bash
+sudo docker build . -t spga_image
+```
+2. Create and run a container of the Docker image
+```bash
+sudo docker run --name spga --rm -it spga_image bash
+```
+
+### Option 2: Local Install
+1. Create a conda environment
 ```bash
 conda env create -f environment.yml
+```
+2. Activate the conda environment
+```bash
 conda activate spga
 ```
- 
-## Replication
-### xSpeedUp
+
+## ICCPS '23 Artifact Evaluation
+This artifact is intended to reproduce each of the plots, figures, training, and testing results included in the corresponding ICCPS '23 paper. 
+
+### Tables and Figures
+
+1. `Table 2: Analysis of Self-Preserving Genetic Algorithms and Safe Reinforcement Learning`
 To reproduce the xSpeedUp results shown in Table 2, run the `Generate Table 2.ipynb` file (~30 sec.).
 
-### Agent Rollout Plots
-To reproduce the rollout plots shown in the graph, navigate to the respective directory and run the respective` *plot*.ipynb` file. For instance, if you want to reproduce the CartPole-v0 action masking plots, navigate to `action_masking` > `cpole` directory and run `plot_cpole_amask_rollouts.ipynb`. The time to plot is environment dependent. Each plot .ipynb, however, takes approximately less than 10 min. to run.
+2. `Table 3: Geometric Mean xSpeedUp of SPGA vs. SRL` 
 
-### Agent Training (not necessary)
-To reproduce the training of each SPGA and SRL agent in their respective environment, navigate to the environment and method in question and run the `./train_spga.sh` or `./train_srl.sh` bash script. This will run the safe learning method for each version of that environment. Time to train is environment dependent. Estimates of total training time are shown below. Because the training can take a long time, the trained agents for each respective test seed (SEED 4) are provided in each directory. Seed implementations used in this work during training are automatically integrated into the code.
+3. `Figure 2: CartPole-v0 SPGA-AM vs. SRL-AM Results`
 
+4. `Figure 3: FrozenLake-v1 SPGA-AM vs. SRL-AM Results`
+
+5. `Figure 4: Knapsack-v0 SPGA-RTA vs. SRL-RTA`
+
+### Agent Training
+
+
+### Time Estimates
 *Note:* These are very rough estimates
 | Environment | Safe Learning Method | Time to Run File |
 |-------------|------------------|----------------------|
@@ -45,6 +74,13 @@ To reproduce the training of each SPGA and SRL agent in their respective environ
 |FrozenLake-v1  | SRL                  |    <  4 hr      |
 |Knapsack-v0  | SPGA                 |    < 2 hr       |
 |FrozenLake-v1  | SRL                  |    <  7 hr      |
+
+
+### Agent Rollout Plots
+To reproduce the rollout plots shown in the graph, navigate to the respective directory and run the respective` *plot*.ipynb` file. For instance, if you want to reproduce the CartPole-v0 action masking plots, navigate to `action_masking` > `cpole` directory and run `plot_cpole_amask_rollouts.ipynb`. The time to plot is environment dependent. Each plot .ipynb, however, takes approximately less than 10 min. to run.
+
+### Agent Training (not necessary)
+To reproduce the training of each SPGA and SRL agent in their respective environment, navigate to the environment and method in question and run the `./train_spga.sh` or `./train_srl.sh` bash script. This will run the safe learning method for each version of that environment. Time to train is environment dependent. Estimates of total training time are shown below. Because the training can take a long time, the trained agents for each respective test seed (SEED 4) are provided in each directory. Seed implementations used in this work during training are automatically integrated into the code.
 
 ### Computational Resources
 These experiments were conducted on an 2.3 GHz 8-Core Intel Core i9 processor with 16 GB 2667 MHz DDR4 of memory.
