@@ -19,13 +19,32 @@ The code base is structured as follows:
  ```
     
 ## Installation
-1. Navigate to the AAAI_SPGA directory
-2. Run:
+Clone this repository to your local machine.
+```bash
+git clone https://github.com/pkrobinette/spga.git
+cd spga
+```
+
+### Option 1: Docker (recommended for ICCPS'23 AE)
+1. Build the Docker image
+```bash
+sudo docker build . -t spga_image
+```
+2. Create and run a container of the Docker image
+```bash
+sudo docker run --name spga --rm -it spga_image bash
+```
+
+### Option 2: Local Install
+1. Create a conda environment
 ```bash
 conda env create -f environment.yml
+```
+2. Activate the conda environment
+```bash
 conda activate spga
 ```
- 
+
 ## Replication
 ### xSpeedUp
 To reproduce the xSpeedUp results shown in Table 2, run the `Generate Table 2.ipynb` file (~30 sec.).
