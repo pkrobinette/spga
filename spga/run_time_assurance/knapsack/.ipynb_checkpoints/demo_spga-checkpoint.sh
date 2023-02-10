@@ -1,0 +1,1 @@
+python demo_ga_knapsack_rta.py --num_rollouts 500 --items 5 --seed 36
