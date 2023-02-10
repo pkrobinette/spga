@@ -1,1 +1,0 @@
-python demo_ppo_frolake_amask.py --num_rollouts 1 --map 32x32 --seed 36 --render True
