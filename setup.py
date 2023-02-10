@@ -10,12 +10,12 @@ with open(path.join(here, 'README.md'), encoding='utf-8') as f:
 setup(
     name='spga',
     version='0.0.0',
-    description='',
+    description='Self-Preserving Genetic Algorithms for Safe Learning in Discrete Action Spaces',
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url='',
-    author='',
-    author_email='',
+    url='https://github.com/pkrobinette/spga',
+    author='Preston Robinette',
+    author_email='preston.k.robinette@vanderbilt.edu',
     license='',
     python_requires='>=3.7',
     install_requires=[
@@ -111,7 +111,6 @@ setup(
     packages=find_packages(),
 
     classifiers=[
-        'License :: OSI Approved :: BSD License',
-        'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.9',
     ],
 )
