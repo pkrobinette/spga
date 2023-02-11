@@ -16,7 +16,7 @@ import argparse
 import matplotlib.pyplot as plt
 import pickle
 
-from train_ga_frolake_amask import final_evaluation
+from train_ga_frolake_amask import final_evaluation, expected_return
 from utils.ga_frolake_masking import Agent
 from utils.custom_amask_frolake import FrozenLake
 

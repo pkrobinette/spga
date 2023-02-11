@@ -138,8 +138,7 @@ class FrozenLake(gym.Env):
                 }
             )
         else:
-            self.observation_space = self.env.observation_space
-            
+            self.observation_space = self.env.observation_space 
             
     def get_avail_actions(self, map_name = "4x4"):
         """ 

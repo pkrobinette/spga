@@ -77,6 +77,48 @@ def final_evaluation(agent, num_rollouts, env_config={}):
     
     return np.mean(eval_rewards), np.mean(eval_time), v_total, v_eps, path
 
+def expected_return(agent, num_rollouts, env_config={}, agent_type=None):
+    """
+    Used for final evaluation policy rollout
+    """
+    action_masking = env_config.get("mask", False)
+    print(env_config)
+    env = Knapsack(env_config)
+    eval_rewards = []
+    eval_time = []
+    v_total = 0
+    v_eps = 0
+    
+    for _ in range(num_rollouts):
+        safe = True
+        steps = 0
+        r = 0
+        obs = env.reset()
+        path = {"lb":[], "val":[], "lb_sum":[], "val_sum":[]}
+        while True:
+            if env.current_weight > env.max_weight:
+                if safe:
+                    v_eps += 1
+                    safe = False
+                v_total += 1
+            if agent_type == "ga":
+                action = agent.get_action(obs)
+            else:
+                action = agent.compute_single_action(obs)
+            path["lb_sum"].append(sum(path["lb"]) + env.item_weights[action])
+            path["val_sum"].append(sum(path["val"]) + env.item_values[action])
+            path["lb"].append(env.item_weights[action])
+            path["val"].append(env.item_values[action])
+            obs, reward, done, _ = env.step(action)
+            r += reward
+            steps += 1
+            if done:
+                eval_rewards.append(r)
+                eval_time.append(steps)
+                break
+    
+    return eval_rewards, path
+
 
 
 def main():

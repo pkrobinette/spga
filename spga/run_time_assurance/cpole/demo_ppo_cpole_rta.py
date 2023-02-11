@@ -27,6 +27,7 @@ def get_args():
     parser.add_argument("--render", choices=('True','False'), help="Render the rollout")
     parser.add_argument("--seed", type=int, default=4)
     parser.add_argument("--x_thresh", type=float, default=1.5)
+    parser.add_argument("--strategy", type=str, default='runtime')
     args = parser.parse_args()
     args.render = True if args.render == 'True' else False
 
@@ -36,7 +37,8 @@ def rollout(trainer, pts, env_config={}, render=False):
     """
     Rollout the trainer
     """
-    action_masking = True if env_config["use_action_masking"] == True else False
+    # action_masking = True if env_config["use_action_masking"] == True else False
+    action_masking = False
     env = CartPole(env_config)
     eval_rewards = []
     eval_time = []
@@ -87,7 +89,7 @@ def main():
     agent, env_config = get_ppo_trainer(args)
     name = "cartpole_ppo_rta_seed-{}_checkpoint-{}".format(args.seed, args.x_thresh)
     agent.restore("trained_agents/seed_{}/{}/{}".format(args.seed, name, name))
-    eval_reward, eval_time, v_total, v_eps, traj = rollout(mask_agent, pts=init_pts, env_config=mask_env_config, render=args.render)
+    eval_reward, eval_time, v_total, v_eps, traj = rollout(agent, pts=init_pts, env_config=env_config, render=args.render)
     
     print("\n------ Demo ------")
     print("Avg. Rollout Reward: ", eval_reward)

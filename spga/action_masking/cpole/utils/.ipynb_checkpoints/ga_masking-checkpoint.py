@@ -49,6 +49,7 @@ class Agent:
             l1 = relu(state["actual_obs"].dot(self.w1) + self.b1)
             logits = l1.dot(self.w2) + self.b2
             
+            
             # Convert action_mask into a [0.0 || -inf]-type mask.
             inf_mask = tf.maximum(tf.math.log(action_mask), tf.float32.min)
             

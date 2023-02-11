@@ -89,12 +89,12 @@ def get_ppo_trainer(args= None):
                 "custom_model": "kp_mask",
             }
             
-        if vars(args).get("map"):
-            print("Using Map: ", args.map)
-            config["env_config"]["map_name"] = args.map
-            
-        config["env_config"]["seed"] = args.seed
-        # config.update({'seed': args.seed})
+    if vars(args).get("map"):
+        print("Using Map: ", args.map)
+        config["env_config"]["map_name"] = args.map
+        
+    config["env_config"]["seed"] = args.seed
+    # config.update({'seed': args.seed})
     
     trainer = ppo.PPOTrainer(config=config)
     return trainer, config["env_config"]

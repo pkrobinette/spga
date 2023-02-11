@@ -48,12 +48,14 @@ class Agent:
             action_mask = state["action_mask"]
 
             state = np.array(state["state"])
+            
             l1 = relu(state.dot(self.w1) + self.b1)
             logits = l1.dot(self.w2) + self.b2
-            
+           
             # Convert action_mask into a [0.0 || -inf]-type mask.
             inf_mask = tf.maximum(tf.math.log(action_mask.astype(float)), tf.float32.min)
             
+        
             # Return masked logits.
             return np.argmax(logits + np.array(inf_mask))
         else:

@@ -112,7 +112,6 @@ class FrozenLake(gym.Env):
         # self.x_threshold = env_config.get("x_threshold", 1.5)
         self.use_action_masking = env_config.get("use_action_masking", False)
         self.use_run_time_assurance = env_config.get("use_run_time_assurance", False)
-        print("USING {} TO TRAIN".format("RTA" if self.use_run_time_assurance else "AM"))
         self.action_mask = None
         
         # set up available actions and holes

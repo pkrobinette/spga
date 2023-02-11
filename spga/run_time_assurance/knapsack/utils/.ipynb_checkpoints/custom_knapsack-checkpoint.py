@@ -25,7 +25,9 @@ def register_env(env_name, env_config={}):
 
 class Knapsack(gym.Env):
     def __init__(self, env_config={}):
+        rt = env_config.pop("runtime", False)
         self.env = or_gym.make("Knapsack-v0", env_config=env_config) # might use version v1
+        env_config['runtime'] = rt
         self.observation_space = self.env.observation_space
         self.item_weights = self.env.item_weights
         self.item_values = self.env.item_values
@@ -34,7 +36,7 @@ class Knapsack(gym.Env):
         self.max_weight = self.env.max_weight
         self.use_run_time_assurance = env_config.get("runtime", False)
         if self.use_run_time_assurance:
-            print("Using RTA to train..\n")
+            print("Using RTA ...\n")
         self.reset()
         # if env_config.get("seed", 0):
         #     self.env.seed(env_config["seed"])

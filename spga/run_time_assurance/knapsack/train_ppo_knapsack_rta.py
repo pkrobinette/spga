@@ -156,6 +156,8 @@ def get_ppo_trainer(args= None):
             config["env_config"].update({"mask":True})
         elif args.strategy == "runtime":
             config["env_config"].update({"runtime":True})
+            config["env_config"].update({"mask":False})
+            
             
         config["env_config"]["seed"] = args.seed
         config.update({'seed': args.seed})
@@ -220,7 +222,8 @@ def main():
     trainer = None
     ep_reward = None
     avg_ep_reward = None
-    rand_seeds = [4, 36, 27, 2, 98]
+    # rand_seeds = [4, 36, 27, 2, 98]
+    rand_seeds = [4]
     # rand_seeds = [44]
     env_config = None
     for i in range(args.num_trials):
