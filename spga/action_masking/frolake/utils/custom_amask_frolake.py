@@ -11,7 +11,7 @@ Resources:
 import gym
 from gym.spaces import Box, Dict
 import numpy as np
-from utils.custom_amask_biggerlake import BiggerLakeEnv
+from .custom_amask_biggerlake import BiggerLakeEnv
 from contextlib import closing
 from io import StringIO
 from os import path

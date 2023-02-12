@@ -2,7 +2,7 @@
 Reproduce Table 2: Analysis of Self-Preserving Genetic 
 Algorithms and Safe Reinforcement Learning
 
-This script utilizes saved training data from each experiemnt.
+This script utilizes saved training data from each experiment.
 """
 
 import os

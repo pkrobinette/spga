@@ -4,8 +4,8 @@ Train agent with PPO using action masking in the CartPole-v0 environment.
 Tuned Hyperparameters From : https://github.com/ray-project/ray/blob/master/rllib/tuned_examples/ppo/cartpole-ppo.yaml
 """
 
-from utils.masking_model import ActionMaskModel, ActionMaskModel_8x8, ActionMaskModel_16x16, ActionMaskModel_32x32
-from utils.custom_amask_frolake import FrozenLake
+from .utils.masking_model import ActionMaskModel, ActionMaskModel_8x8, ActionMaskModel_16x16, ActionMaskModel_32x32
+from .utils.custom_amask_frolake import FrozenLake
 
 import ray
 from ray.tune.logger import pretty_print
