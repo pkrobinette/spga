@@ -49,9 +49,9 @@ conda activate spga
 This artifact is intended to reproduce each of the plots, figures, training, and testing results included in the corresponding ICCPS '23 paper. 
 
 ### Tables and Figures
+The tables and figures reproduced in this artifiact evaluation are listed below.
 
 1. `Table 2: Analysis of Self-Preserving Genetic Algorithms and Safe Reinforcement Learning`
-To reproduce the xSpeedUp results shown in Table 2, run the `Generate Table 2.ipynb` file (~30 sec.).
 
 2. `Table 3: Geometric Mean xSpeedUp of SPGA vs. SRL` 
 
@@ -60,6 +60,21 @@ To reproduce the xSpeedUp results shown in Table 2, run the `Generate Table 2.ip
 4. `Figure 3: FrozenLake-v1 SPGA-AM vs. SRL-AM Results`
 
 5. `Figure 4: Knapsack-v0 SPGA-RTA vs. SRL-RTA`
+
+### Instructions to Reproduce
+1. Navigate to the `spga.spga` directory. 
+```bash
+cd spga
+```
+2. Make the `generate_artifacts.sh` script executable
+```bash
+chmod +x generate_artifacts.sh
+```
+3. Run the script
+```bash
+./generate_artifacts.sh
+```
+4. Evaluate artifacts. All artifacts are saved in the `artifacts` directory.
 
 ### Agent Training
 
