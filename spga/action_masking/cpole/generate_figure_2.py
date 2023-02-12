@@ -9,20 +9,13 @@ import seaborn as sns
 from os import listdir
 from os.path import isfile, join
 import json
-from action_masking.cpole.utils.custom_amask_cpole import CartPole
-from action_masking.cpole.train_ppo_cpole_amask import get_ppo_trainer
-from action_masking.cpole.utils.ga_masking import Agent
+from utils.custom_amask_cpole import CartPole
+from train_ppo_cpole_amask import get_ppo_trainer
+from utils.ga_masking import Agent
 from matplotlib.patches import Rectangle
 from matplotlib import colors as mcolors
 from scipy.signal import savgol_filter
-import sys
 
-# appending a path
-sys.path.append('/Users/probinet/Documents/PROJECTS/ICCPS_SPGA_REP/spga/action_masking/cpole')
-sys.path.append('/Users/probinet/Documents/PROJECTS/ICCPS_SPGA_REP/spga/action_masking/cpole/utils')
-  
-# printing all paths
-sys.path
 
 np.random.seed(10)
 NUM_TRIALS = 50
@@ -165,7 +158,7 @@ def generate_plots():
         axis[k].set_xlim([-2.4, 2.4])
         
     plt.tight_layout()
-    plt.savefig("artifacts/cpole_am_x_results{}.png".format(NAME), bbox_inches='tight', dpi=200)
+    plt.savefig("artifacts/figure_2a-position.png", bbox_inches='tight', dpi=200)
     #
     # VELOCITY PLOT ------------------------------------------------
     #
@@ -248,7 +241,7 @@ def generate_plots():
         axis[k].set_xlim([-.48, .48])
         
     plt.tight_layout()
-    plt.savefig("artifacts/cpole_am_theta_results{}.png".format(NAME), bbox_inches='tight', dpi=200)
+    plt.savefig("artifacts/figure_2b-angle.png", bbox_inches='tight', dpi=200)
     #
     # ANGULAR VELOCITY PLOT ------------------------------------------------
     #

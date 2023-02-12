@@ -3,10 +3,10 @@ Reproduce Figure 3:  FrozenLake-v1 SPGA-Action Mask (SPGA-AM) vs. SRL-Action Mas
 """
 
 
-from action_masking.frolake.utils.custom_amask_frolake import FrozenLake
-from action_masking.frolake.train_ga_frolake_amask import expected_return
-from action_masking.frolake.train_ppo_frolake_amask import get_ppo_trainer
-from action_masking.frolake.utils.ga_frolake_masking import Agent
+from utils.custom_amask_frolake import FrozenLake
+from train_ga_frolake_amask import expected_return
+from train_ppo_frolake_amask import get_ppo_trainer
+from utils.ga_frolake_masking import Agent
 
 from ray import tune
 import json
@@ -26,9 +26,9 @@ def get_args():
     # create the parser
     parser = argparse.ArgumentParser()
     # Add the arguments to be parsed
-    parser.add_argument("--render", action='store_true')
-    parser.add_argument('--no-render', dest='render', action='store_false')
-    parser.set_defaults(render=True)
+    parser.add_argument("--render", action='store_false')
+    parser.add_argument('--no-render', dest='render', action='store_true')
+    parser.set_defaults(render=False)
     parser.add_argument("--map", type=str, default="16x16", help="The map dimensions of the frozen lake")
     parser.add_argument("--seed", type=int, default=4)
     args = parser.parse_args()
@@ -112,7 +112,7 @@ def show_path(path, vers, env_config, name):
     grid = np.array(grid)
     grid = grid.reshape(grid_s, grid_s)
     
-    file = open('artifacts/frolake_'+name+'-AM_path.txt','w')
+    file = open(f'artifacts/figure_3-{name}.txt','w')
     for i in range(len(grid)):
         line = "".join(grid[i])
         print(line)

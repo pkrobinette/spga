@@ -6,8 +6,8 @@ Notes
 
 """
 
-from .utils.ga_frolake_masking import Generation
-from .utils.custom_amask_frolake import FrozenLake
+from utils.ga_frolake_masking import Generation
+from utils.custom_amask_frolake import FrozenLake
 # from utils.custom_amask_biggerlake import BiggerLakeEnv
 
 import argparse

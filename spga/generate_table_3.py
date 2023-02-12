@@ -104,15 +104,23 @@ if __name__ == "__main__":
     #
     # Calculate and record the geometric mean data
     #
-    print("Geometric Mean xSpeedUp of SPGA vs. SRL")
-    print("--------------------------------------")
-    for i in s_vals.keys():
-        for way in walk:
-            path = way+i+"/results/"
-            x = get_speedup(path)
-            all_envs.append(x)
-            print("{} - {} SpeedUp: {}".format(i, "AM" if way == am_path else "RTA", x))
-    #
-    # Print the information
-    #
-    print("All Envs: {}".format(round(g_mean(all_envs), 2)))
+    with open("artifacts/table_3.txt", "w") as f:
+        title = "Geometric Mean xSpeedUp of SPGA vs. SRL"
+        f.write(title+"\n")
+        f.write("--------------------------------------\n")
+        print(title)
+        print("--------------------------------------")
+        for i in s_vals.keys():
+            for way in walk:
+                path = way+i+"/results/"
+                x = get_speedup(path)
+                all_envs.append(x)
+                line = "{} - {} SpeedUp: {}".format(i, "AM" if way == am_path else "RTA", x)
+                f.write(line+"\n")
+                print(line)
+        #
+        # Print the information
+        #
+        line = "All Envs: {}".format(round(g_mean(all_envs), 2))
+        f.write(line+"\n")
+        print(line)

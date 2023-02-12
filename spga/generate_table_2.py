@@ -113,19 +113,31 @@ def pretty_print(data):
     # Print all data
     #
     # for each environment
-    print("\n\nAnalysis of Self-Preserving Genetic Algorithms and Safe Reinforcement Learning")
-    print("--------------------------------------")
-    print(f"Environment | Safety Method |  Variant/Safety Condition |  Training Time (s) |  Expected Return |  Safe Actions (%) |  Training Time (s) |  Expected Return |  Safe Actions (%) | xSpeedUp")
-    for env in data.keys():
-        # for each method (rta, AM)
-        for method in data[env].keys():
-            vers, name = ENV_INFO[env]
-            info = data[env][method]
-            # for each environment version
-            for ver in vers:
-                speed = round(info["ppo"][ver]["Time to Train"]/info["ga"][ver]["Time to Train"], 2)
-                print(f'{name} | {method} | {ver} | {info["ga"][ver]["Time to Train"]}+/-{info["ga"][ver]["Time Cnfd"]} |  {info["ga"][ver]["Expected Return"]}+/-{info["ga"][ver]["Return Cnfd"]} | {info["ga"][ver]["Safe Actions"]}+/-0 | {info["ppo"][ver]["Time to Train"]}+/-{info["ppo"][ver]["Time Cnfd"]} | {info["ppo"][ver]["Expected Return"]} +/-{info["ppo"][ver]["Return Cnfd"]} | {info["ppo"][ver]["Safe Actions"]}+/-0 | {speed}')
-        print("-------------------------------------------")
+    with open("artifacts/table_2.txt", 'w') as f:
+        title = "Analysis of Self-Preserving Genetic Algorithms and Safe Reinforcement Learning"
+        f.write(title+"\n")
+        f.write("--------------------------------------\n")
+        print("\n\n", title)
+        print("--------------------------------------")
+        headers = "Environment | Safety Method |  Variant/Safety Condition |  Training Time (s) |  Expected Return |  Safe Actions (%) |  Training Time (s) |  Expected Return |  Safe Actions (%) | xSpeedUp"
+        f.write(headers+"\n")
+        print(headers)
+        #
+        # Record data
+        #
+        for env in data.keys():
+            # for each method (rta, AM)
+            for method in data[env].keys():
+                vers, name = ENV_INFO[env]
+                info = data[env][method]
+                # for each environment version
+                for ver in vers:
+                    speed = round(info["ppo"][ver]["Time to Train"]/info["ga"][ver]["Time to Train"], 2)
+                    line = f'{name} | {method} | {ver} | {info["ga"][ver]["Time to Train"]}+/-{info["ga"][ver]["Time Cnfd"]} |  {info["ga"][ver]["Expected Return"]}+/-{info["ga"][ver]["Return Cnfd"]} | {info["ga"][ver]["Safe Actions"]}+/-0 | {info["ppo"][ver]["Time to Train"]}+/-{info["ppo"][ver]["Time Cnfd"]} | {info["ppo"][ver]["Expected Return"]} +/-{info["ppo"][ver]["Return Cnfd"]} | {info["ppo"][ver]["Safe Actions"]}+/-0 | {speed}'
+                    f.write(line+"\n")
+                    print(line)
+            f.write("-------------------------------------------")
+            print("-------------------------------------------")
     
     return 0
 

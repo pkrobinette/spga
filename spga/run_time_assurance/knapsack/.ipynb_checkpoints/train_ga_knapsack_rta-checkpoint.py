@@ -6,8 +6,8 @@ Notes
 
 """
 
-from .utils.ga_masking import Generation
-from .utils.custom_knapsack import Knapsack
+from utils.ga_masking import Generation
+from utils.custom_knapsack import Knapsack
 
 import argparse
 import matplotlib.pyplot as plt

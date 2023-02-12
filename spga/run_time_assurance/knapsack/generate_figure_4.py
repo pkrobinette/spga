@@ -2,11 +2,6 @@
 Reproduce Figure 4: 5 Item Knapsack SPGA-RTA vs SPGA-AM
 """
 
-"""
-
-Used to demo a trained agent in the Knapsack Environment environment --runtime.
-
-"""
 
 from ray import tune
 import json
@@ -18,20 +13,11 @@ import pickle
 import pandas as pd
 import time
 import seaborn as sns
-import sys
-sys.path.append('/Users/probinet/Documents/PROJECTS/ICCPS_SPGA_REP/spga/action_masking/knapsack/utils')
 
-
-
-# from run_time_assurance.knapsack.train_ga_knapsack_rta import expected_return
-# from run_time_assurance.knapsack.train_ppo_knapsack_rta import get_ppo_trainer
-# from run_time_assurance.knapsack.utils.ga_masking import Agent
-# from run_time_assurance.knapsack.utils.custom_knapsack import Knapsack
-
-from action_masking.knapsack.train_ga_knapsack_amask import expected_return
-from action_masking.knapsack.train_ppo_knapsack_amask import get_ppo_trainer
-from action_masking.knapsack.utils.ga_masking import Agent
-from action_masking.knapsack.utils.custom_knapsack import Knapsack
+from train_ga_knapsack_rta import expected_return
+from train_ppo_knapsack_rta import get_ppo_trainer
+from utils.ga_masking import Agent
+from utils.custom_knapsack import Knapsack
 
 ENV_DICT = {
     50: {'N': 50,
@@ -46,8 +32,8 @@ ENV_DICT = {
                                  3, 10, 13,  9, 14, 12, 11,  1, 14, 13,  6, 
                                  16,  8, 13, 14, 19, 18, 17,  3, 16,  3, 13,  
                                  2, 10, 16, 14,  4, 11, 14]),
-        'mask': True,
-        'runtime':False},
+        'mask': False,
+        'runtime':True},
     100: {'N': 100,
         'max_weight': 50,
         'item_weights': np.array([33, 21, 29, 17, 33, 32, 35, 23, 22, 
@@ -66,15 +52,15 @@ ENV_DICT = {
                                  4,  5,  5, 13, 4,  6, 13,  8,  5,  4,  2, 11, 11, 
                                  10, 13,  7,  7,  5, 14,  3,  2, 14, 14,  5, 11, 12, 
                                  12,  6,  6, 12,  5,  2, 10,  5,  8, 14]),
-        'mask': True,
-        'runtime': False},
+        'mask': False,
+        'runtime': True},
     
     5: {'N': 5,
         'max_weight': 15,
         'item_weights': np.array([1, 12, 2, 1, 4]),
         'item_values': np.array([2, 4, 2, 1, 10]),
-        'mask': True,
-        'runtime': False}
+        'mask': False,
+        'runtime': True}
 }
 
 OPTIMAL_SOLUTION = {
@@ -93,7 +79,7 @@ def get_args():
     # Add the arguments to be parsed
     parser.add_argument("--items", type=int, default=5, help="The map dimensions of the frozen lake")
     parser.add_argument("--seed", type=int, default=4, help="Indicate the training seed")
-    parser.add_argument("--strategy", type=str, default="action_masking")
+    parser.add_argument("--strategy", type=str, default="runtime")
     args = parser.parse_args() 
 
     return args
@@ -122,8 +108,8 @@ def generate_plot(path, env_config, name):
     plt.ylabel("Value", **csfont)
     plt.xlabel("Step", **csfont)
     plt.tight_layout()
-    plt.savefig(f"artifacts/knapsack_{name}_rta_{env_config['N']}_results.png", bbox_inches='tight', dpi=200)
-    plt.show()
+    plt.savefig(f"artifacts/figure_4-{name}.png", bbox_inches='tight', dpi=200)
+    # plt.show()
         
     return 0
 
@@ -140,18 +126,17 @@ def main():
     env_config = ENV_DICT[vers]
     env_config["seed"] = args.seed
     agent = Agent()
-    agent.load(f"action_masking/knapsack/trained_agents/knapsack_ga_masking_seed-{args.seed}_checkpoint-{args.items}.json")
+    agent.load(f"run_time_assurance/knapsack/trained_agents/knapsack_ga_rta_seed-{args.seed}_checkpoint-{args.items}.json")
     agent.strategy = args.strategy
     eval_rewards, ga_path = expected_return(agent, 1, env_config, agent_type='ga')
     #
     # Generate PPO Path
     #
-    args.strategy = "action_masking"
+    
     ppo_agent, ec = get_ppo_trainer(args)
-    print("ECCC, env", ec, env_config)
-    name = f"knapsack_ppo_masking_seed-{args.seed}_checkpoint-{args.items}"
-    ppo_agent.restore("action_masking/knapsack/trained_agents/{}/{}".format(name, name))
-    eval_rewards, ppo_path = expected_return(ppo_agent, 1, env_config)
+    name = f"knapsack_ppo_rta_seed-{args.seed}_checkpoint-{args.items}"
+    ppo_agent.restore("run_time_assurance/knapsack/trained_agents/{}/{}".format(name, name))
+    eval_rewards, ppo_path = expected_return(ppo_agent, 1, ec)
 
     generate_plot(ga_path, env_config, "SPGA")
     generate_plot(ppo_path, env_config, "SRL")
