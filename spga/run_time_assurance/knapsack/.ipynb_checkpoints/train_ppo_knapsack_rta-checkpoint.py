@@ -4,8 +4,8 @@ Train agent with PPO using action masking in the CartPole-v0 environment.
 Tuned Hyperparameters From : https://github.com/ray-project/ray/blob/master/rllib/tuned_examples/ppo/cartpole-ppo.yaml
 """
 
-from utils.masking_model import ActionMaskModel, ActionMaskModel50, ActionMaskModel100
-from utils.custom_knapsack import Knapsack
+from .utils.masking_model import ActionMaskModel, ActionMaskModel50, ActionMaskModel100
+from .utils.custom_knapsack import Knapsack
 
 import ray
 from ray.tune.logger import pretty_print
@@ -156,7 +156,6 @@ def get_ppo_trainer(args= None):
             config["env_config"].update({"mask":True})
         elif args.strategy == "runtime":
             config["env_config"].update({"runtime":True})
-            config["env_config"].update({"mask":False})
             
             
         config["env_config"]["seed"] = args.seed
@@ -269,14 +268,9 @@ def main():
     #
     # agent, env_config = get_ppo_trainer()
     # agent.restore(checkpoint)
-    print("Training Complete. Testing the trained agent with action masking ...\n")
+    print("Training Complete. Testing the trained agent with runtime assurance ...\n")
     
     mask_eval_reward, mask_eval_time, mask_v_total, mask_v_eps = final_evaluation(trainer, args.num_eval_eps, env_config)
-    #
-    # Evaluate without Action Masking
-    #
-    # env_config.update({"mask":False})
-    # norm_eval_reward, norm_eval_time, norm_v_total, norm_v_eps = final_evaluation(trainer, args.num_eval_eps, env_config)
     #
     # Data
     #
@@ -292,11 +286,6 @@ def main():
     print("Number of Safety Violations with RTA: ", mask_v_total)
     print("Percentage of Safe Rollouts with RTA: {}%".format(mask_safe_rolls))
     print("Average Rollout Episode Length with RTA: ", mask_eval_time)
-    # print("\n-----Evaluation WITHOUT Action Masking-------")
-    # print("Average Evaluation Reward without Masking: ", norm_eval_reward)
-    # print("Number of Safety Violations without Masking: ", norm_v_total)
-    # print("Percentage of Safe Rollouts without Masking: {}%".format(norm_safe_rolls))
-    # print("Average Rollout Episode Length without Masking: ", norm_eval_time)
     #
     # Save Training Data and Agent
     #

@@ -1,13 +1,16 @@
 """
-Train genetic algorithm with action masking in FrozenLake.
+Train genetic algorithm with action masking in Knapsack.
 
 Notes
 -----
 
 """
 
-from utils.ga_masking import Generation
-from utils.custom_knapsack import Knapsack
+# import sys
+# sys.path.append("./utils")
+
+from .utils.ga_masking import Generation
+from .utils.custom_knapsack import Knapsack
 
 import argparse
 import matplotlib.pyplot as plt

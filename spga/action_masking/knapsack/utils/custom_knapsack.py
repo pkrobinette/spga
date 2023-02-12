@@ -25,7 +25,9 @@ def register_env(env_name, env_config={}):
 
 class Knapsack(gym.Env):
     def __init__(self, env_config={}):
+        rt = env_config.pop("runtime", False)
         self.env = or_gym.make("Knapsack-v0", env_config=env_config) # might use version v1
+        env_config['runtime'] = rt
         self.observation_space = self.env.observation_space
         self.item_weights = self.env.item_weights
         self.item_values = self.env.item_values
