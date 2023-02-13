@@ -17,9 +17,8 @@ setup(
     author='Preston Robinette',
     author_email='preston.k.robinette@vanderbilt.edu',
     license='',
-    python_requires='>=3.7',
+    python_requires='>=3.9',
     install_requires=[
-        'absl-py==1.4.0',
         'aiohttp==3.8.1',
         'aiohttp-cors==0.7.0',
         'aioredis==1.3.1',
@@ -135,6 +134,7 @@ setup(
         'wrapt==1.13.3',
         'yarl==1.7.2',
         'zipp==3.7.0',
+        'seaborn==0.12.2',
     ],
     packages=find_packages(),
 

@@ -26,6 +26,7 @@ COPY . .
 
 # install python package dependencies
 RUN pip install .
+# RUN pip3 install seaborn -U
 
 
 # FROM continuumio/miniconda3

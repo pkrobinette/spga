@@ -1,0 +1,9 @@
+Geometric Mean xSpeedUp of SPGA vs. SRL
+--------------------------------------
+cpole - RTA SpeedUp: 12.95
+cpole - AM SpeedUp: 3.21
+frolake - RTA SpeedUp: 1177.54
+frolake - AM SpeedUp: 45.82
+knapsack - RTA SpeedUp: 306.16
+knapsack - AM SpeedUp: 41.58
+All Envs: 55.28
