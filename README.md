@@ -37,7 +37,7 @@ cd spga
 git checkout 3def500
 ```
 
-### Option 1: Docker (recommended for ICCPS'23 AE) (~5 min.)
+### Option 1: Docker (recommended for ICCPS'23 AE) (~10 min.)
 1. Build the Docker image
 ```bash
 sudo docker build . -t spga_image
@@ -60,7 +60,7 @@ conda activate spga
 ```bash
 python -m pip install --upgrade setuptools
 ```
-4. Install required packages
+4. Install required packages **Note: Run 2x if issues; seems to fix issue**
 ```bash
 python setup.py install
 ```
@@ -81,7 +81,7 @@ The tables and figures reproduced in this artifiact evaluation are listed below.
 
 5. `Figure 4: Knapsack-v0 SPGA-RTA vs. SRL-RTA`
 
-### Instructions to Reproduce (~4 min.)
+### Instructions to Reproduce (~10 min.)
 1. Navigate to the `spga.spga` directory. 
 ```bash
 cd spga
@@ -117,8 +117,8 @@ To reproduce the training of each SPGA and SRL agent in their respective environ
 *Note:* These are very rough estimates
 | Command | Time to Run File |
 |-------------|------------------|
-|Dockerfile Setup  | ~5 min.  |
-|Reproduce Artifacts  | ~4 min. |
+|Dockerfile Setup  | ~10 min.  |
+|Reproduce Artifacts  | ~10 min. |
 |Train All Agents  | ~72 hrs. |
 
 
