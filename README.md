@@ -37,7 +37,7 @@ cd spga
 git checkout 61141e2
 ```
 
-### Option 1: Docker (recommended for ICCPS'23 AE) (~10 min.)
+### Option 1: Docker (recommended for ICCPS'23 AE) (~20 min.)
 1. Build the Docker image
 ```bash
 sudo docker build . -t spga_image
@@ -117,7 +117,7 @@ To reproduce the training of each SPGA and SRL agent in their respective environ
 *Note:* These are very rough estimates
 | Command | Time to Run File |
 |-------------|------------------|
-|Dockerfile Setup  | ~10 min.  |
+|Dockerfile Setup  | ~20 min.  |
 |Reproduce Artifacts  | ~10 min. |
 |Train All Agents  | ~72 hrs. |
 
