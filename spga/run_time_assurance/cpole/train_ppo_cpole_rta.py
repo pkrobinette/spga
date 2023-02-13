@@ -24,6 +24,9 @@ import os
 from os.path import isdir, join, isfile
 import shutil
 
+import sys
+sys.path.append(sys.path[0]+"/results")
+sys.path.append(sys.path[0]+"/trained_agents")
 
 def get_args():
     """
@@ -104,6 +107,24 @@ def get_ppo_trainer(args= None):
 
 
 def final_evaluation(trainer, n_final_eval, env_config={}):
+    """
+    Used for final evaluation policy rollout.
+    
+    Parameters:
+    -----------
+    trainer : ppo agent
+    n_final_eval : int
+        number of times to evaluate an agent
+    env_config : dict
+        environment configuration file
+        
+    Returns
+    --------
+    - mean of all eval rewards
+    - mean of all rollout times
+    - number of total violations
+    - number of episodes with at least one violation
+    """
     action_masking = env_config.get("use_action_masking", False)
     env = CartPole(env_config)
     eval_rewards = []
@@ -140,6 +161,9 @@ def final_evaluation(trainer, n_final_eval, env_config={}):
 
 
 def main():
+    """
+    main function
+    """
     #
     # Setup
     #
@@ -180,8 +204,6 @@ def main():
         # save the trained agent
         #
         name = "cartpole_ppo_rta_seed-{}_checkpoint-{}".format(str(args.seed), abs(args.x_thresh))
-        if args.extend:
-            name = "cartpole_ppo_rta_seed-{}_extended_checkpoint-{}".format(str(args.seed), abs(args.x_thresh))
         train_time.append(results["time_total_s"])
         checkpoint= trainer.save("./trained_agents/"+name)
         for f in os.listdir("./trained_agents/"+name):
@@ -220,16 +242,11 @@ def main():
     # Print Values
     #
     print("Average Time to Train: ", avg_train_time)
-    print("\n-----Evaluation WITH RTA-------")
-    print("Average Evaluation Reward with RTA: ", mask_eval_reward)
-    print("Number of Safety Violations with RTA: ", mask_v_total)
-    print("Percentage of Safe Rollouts with RTA: {}%".format(mask_safe_rolls))
-    print("Average Rollout Episode Length with RTA: ", mask_eval_time)
-    print("\n-----Evaluation WITHOUT RTA-------")
-    print("Average Evaluation Reward: ", norm_eval_reward)
-    print("Number of Safety Violations: ", norm_v_total)
-    print("Percentage of Safe Rollouts: {}%".format(norm_safe_rolls))
-    print("Average Rollout Episode Length: ", norm_eval_time)
+    print("\n-----Evaluation -------")
+    print("Average Evaluation Reward: ", mask_eval_reward)
+    print("Number of Safety Violations: ", mask_v_total)
+    print("Percentage of Safe Rollouts: {}%".format(mask_safe_rolls))
+    print("Average Rollout Episode Length: ", mask_eval_time)
     #
     # Save Training Data and Agent
     #
@@ -248,12 +265,8 @@ def main():
         "avg_ep_reward": avg_ep_reward,
     }
     
-    if args.extend:
-        with open('results/cpole_ppo_rta_seeded_extended_results-{}.pkl'.format(abs(args.x_thresh)), 'wb') as f:
-            pickle.dump(data, f)
-    else:
-        with open('results/cpole_ppo_rta_seeded_results-{}.pkl'.format(abs(args.x_thresh)), 'wb') as f:
-            pickle.dump(data, f)         
+    with open('results/cpole_ppo_rta_seeded_results-{}.pkl'.format(abs(args.x_thresh)), 'wb') as f:
+        pickle.dump(data, f)         
 
 if __name__ == "__main__":
     main()

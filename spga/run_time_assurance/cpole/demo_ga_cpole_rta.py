@@ -9,6 +9,11 @@ import pickle
 from train_ga_cpole_rta import final_evaluation
 from utils.ga_masking import Agent
 
+import sys
+sys.path.append(sys.path[0]+"/results")
+sys.path.append(sys.path[0]+"/trained_agents")
+sys.path.append(sys.path[0]+"/utils")
+
 def get_args():
     """
     Parse the command arguments

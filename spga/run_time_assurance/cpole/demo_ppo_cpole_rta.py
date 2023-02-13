@@ -15,6 +15,11 @@ import matplotlib.pyplot as plt
 import pickle
 from train_ppo_cpole_rta import get_ppo_trainer
 
+import sys
+sys.path.append(sys.path[0]+"/results")
+sys.path.append(sys.path[0]+"/trained_agents")
+sys.path.append(sys.path[0]+"/utils")
+
 
 def get_args():
     """
