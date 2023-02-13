@@ -85,19 +85,23 @@ chmod +x generate_artifacts.sh
 ./generate_artifacts.sh
 ```
 4. *(If Using Docker)* Pull artifacts the docker image.
+
     a. Open a seperate window on your machine and navigate to the embedded sgpa folder. (spga.spga)
+    
     b. Make the `retrieve.sh` script executable
     ```bash
     chmod +x retrieve.sh
     ```
+    
     c. Run the script
     ```bash
     ./retrieve.sh
     ```
+    
 5. Evaluate reproduced artifacts.
 
-### Agent Training
-To reproduce the training of each SPGA and SRL agent in their respective environment, navigate to the environment and method in question and run the `./train_spga.sh` or `./train_srl.sh` bash script. This will run the safe learning method for each version of that environment. Time to train is environment dependent. Estimates of total training time are shown below. Because the training can take a long time, the trained agents for each respective test seed (SEED 4) are provided in each directory. Seed implementations used in this work during training are automatically integrated into the code.
+### Agent Training (~72 hrs.)
+To reproduce the training of each SPGA and SRL agent in their respective environment, navigate to the environment and method in question and run the `./train.sh` bash script. This will run the safe learning method for each version of that environment. Time to train is environment dependent. It takes approximately 72 hours to train all agents, for each environment, and each seed. Because the training can take a long time, the trained agents for each respective test seed (SEED 4) are provided in each directory. Seed implementations used in this work during training are automatically integrated into the code.
 
 ### Time Estimates
 *Note:* These are very rough estimates
@@ -105,8 +109,7 @@ To reproduce the training of each SPGA and SRL agent in their respective environ
 |-------------|------------------|
 |Dockerfile Setup  | ~5 min.  |
 |Reproduce Artifacts  | ~4 min. |
-|Train All Agents  | ~48 hrs. |
-
+|Train All Agents  | ~72 hrs. |
 
 
 ### Computational Resources
