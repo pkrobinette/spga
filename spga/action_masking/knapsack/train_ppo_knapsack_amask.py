@@ -4,8 +4,8 @@ Train agent with PPO using action masking in the CartPole-v0 environment.
 Tuned Hyperparameters From : https://github.com/ray-project/ray/blob/master/rllib/tuned_examples/ppo/cartpole-ppo.yaml
 """
 
-from .utils.masking_model import ActionMaskModel, ActionMaskModel50, ActionMaskModel100
-from .utils.custom_knapsack import Knapsack
+from utils.masking_model import ActionMaskModel, ActionMaskModel50, ActionMaskModel100
+from utils.custom_knapsack import Knapsack
 
 import ray
 from ray.tune.logger import pretty_print
@@ -27,8 +27,9 @@ import shutil
 import or_gym
 from or_gym.utils import create_env
 
-# time to train, average of 100 rollouts, avg. episode length of 100 rollouts
-
+import sys
+sys.path.append(sys.path[0]+"/results")
+sys.path.append(sys.path[0]+"/trained_agents")
 
 
 def get_args():
@@ -163,6 +164,25 @@ def get_ppo_trainer(args= None):
 
 
 def final_evaluation(trainer, n_final_eval, env_config={}):
+    """
+    Used for final evaluation policy rollout.
+    
+    Parameters:
+    -----------
+    trainer : ppo agent
+    n_final_eval : int
+        number of times to evaluate an agent
+    env_config : dict
+        environment configuration file
+        
+    Returns
+    --------
+    - mean of all eval rewards
+    - mean of all rollout times
+    - number of total violations
+    - number of episodes with at least one violation
+    - path of rollout
+    """
     action_masking = env_config.get("mask", False)
     env = Knapsack(env_config)
     eval_rewards = []
@@ -183,7 +203,7 @@ def final_evaluation(trainer, n_final_eval, env_config={}):
                     safe = False
                 v_total += 1
             action = trainer.compute_single_action(obs)
-            print("Step {} --> Weight: {} | Value: {}".format(steps, env.item_weights[action], env.item_values[action]))
+            # print("Step {} --> Weight: {} | Value: {}".format(steps, env.item_weights[action], env.item_values[action]))
             path["lb_sum"].append(sum(path["lb"]) + env.item_weights[action])
             path["val_sum"].append(sum(path["val"]) + env.item_values[action])
             path["lb"].append(env.item_weights[action])
@@ -200,6 +220,9 @@ def final_evaluation(trainer, n_final_eval, env_config={}):
 
 
 def main():
+    """
+    main function
+    """
     #
     # Setup and seeds
     #
@@ -266,12 +289,7 @@ def main():
     # agent.restore(checkpoint)
     print("Training Complete. Testing the trained agent with action masking ...\n")
     
-    mask_eval_reward, mask_eval_time, mask_v_total, mask_v_eps = final_evaluation(trainer, args.num_eval_eps, env_config)
-    #
-    # Evaluate without Action Masking
-    #
-    # env_config.update({"mask":False})
-    # norm_eval_reward, norm_eval_time, norm_v_total, norm_v_eps = final_evaluation(trainer, args.num_eval_eps, env_config)
+    mask_eval_reward, mask_eval_time, mask_v_total, mask_v_eps, _ = final_evaluation(trainer, args.num_eval_eps, env_config)
     #
     # Data
     #
@@ -282,16 +300,11 @@ def main():
     # Print Values
     #
     print("Average Time to Train: ", avg_train_time)
-    print("\n-----Evaluation WITH Action Masking-------")
-    print("Average Evaluation Reward with Masking: ", mask_eval_reward)
-    print("Number of Safety Violations with Masking: ", mask_v_total)
-    print("Percentage of Safe Rollouts with Masking: {}%".format(mask_safe_rolls))
-    print("Average Rollout Episode Length with Masking: ", mask_eval_time)
-    # print("\n-----Evaluation WITHOUT Action Masking-------")
-    # print("Average Evaluation Reward without Masking: ", norm_eval_reward)
-    # print("Number of Safety Violations without Masking: ", norm_v_total)
-    # print("Percentage of Safe Rollouts without Masking: {}%".format(norm_safe_rolls))
-    # print("Average Rollout Episode Length without Masking: ", norm_eval_time)
+    print("\n-----Evaluation -------")
+    print("Average Evaluation Reward : ", mask_eval_reward)
+    print("Number of Safety Violations: ", mask_v_total)
+    print("Percentage of Safe Rollouts: {}%".format(mask_safe_rolls))
+    print("Average Rollout Episode Length: ", mask_eval_time)
     #
     # Save Training Data and Agent
     #
@@ -302,10 +315,6 @@ def main():
         "mask_eval_time": mask_eval_time,
         "mask_safe_rolls": mask_safe_rolls,
         "mask_v_total": mask_v_total,
-        # "norm_eval_reward": norm_eval_reward,
-        # "norm_eval_time": norm_eval_time,
-        # "norm_safe_rolls": norm_safe_rolls,
-        # "norm_v_total": norm_v_total,
         "ep_reward": ep_reward,
         "avg_ep_reward": avg_ep_reward,
     }

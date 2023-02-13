@@ -34,6 +34,25 @@ def get_args():
     return args
 
 def final_evaluation(trainer, n_final_eval, env_config={}):
+    """
+    Used for final evaluation policy rollout.
+    
+    Parameters:
+    -----------
+    trainer : ppo agent
+    n_final_eval : int
+        number of times to evaluate an agent
+    env_config : dict
+        environment configuration file
+        
+    Returns
+    --------
+    - mean of all eval rewards
+    - mean of all rollout times
+    - number of total violations
+    - number of episodes with at least one violation
+    - path
+    """
     action_masking = env_config.get("mask", False)
     env = Knapsack(env_config)
     eval_rewards = []
@@ -81,11 +100,11 @@ def main():
     mask_eval_reward, mask_eval_time, mask_v_total, mask_v_eps, path = final_evaluation(mask_agent, args.num_rollouts, env_config=mask_env_config)
     
     
-    print("\n----- Demo With Masking -----")
-    print("Avg. Rollout Reward WITH Masking: ", mask_eval_reward)
-    print("Avg. Num of Steps WITH Masking: ", mask_eval_time)
-    print("Total Violations WITH Masking: ", mask_v_total)
-    print("Percentage of Safe Rollouts WITH Masking: {}%".format(100-(mask_v_eps/args.num_rollouts*100)))
+    print("\n----- Demo -----")
+    print("Avg. Rollout Reward: ", mask_eval_reward)
+    print("Avg. Num of Steps: ", mask_eval_time)
+    print("Total Violations: ", mask_v_total)
+    print("Percentage of Safe Rollouts: {}%".format(100-(mask_v_eps/args.num_rollouts*100)))
     
     
     

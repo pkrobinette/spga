@@ -6,11 +6,8 @@ Notes
 
 """
 
-# import sys
-# sys.path.append("./utils")
-
-from .utils.ga_masking import Generation
-from .utils.custom_knapsack import Knapsack
+from utils.ga_masking import Generation
+from utils.custom_knapsack import Knapsack
 
 import argparse
 import matplotlib.pyplot as plt
@@ -18,6 +15,9 @@ import time
 import numpy as np
 import pickle
 
+import sys
+sys.path.append(sys.path[0]+"/results")
+sys.path.append(sys.path[0]+"/trained_agents")
 
 def get_args():
     """
@@ -42,7 +42,23 @@ def get_args():
 
 def final_evaluation(agent, num_rollouts, env_config={}):
     """
-    Used for final evaluation policy rollout
+    Used for final evaluation policy rollout.
+    
+    Parameters:
+    -----------
+    agent : ga agent
+    num_rollouts : int
+        number of times to evaluate an agent
+    env_config : dict
+        environment configuration file
+        
+    Returns
+    --------
+    - mean of all eval rewards
+    - mean of all rollout times
+    - number of total violations
+    - number of episodes with at least one violation
+    - path of rollout
     """
     action_masking = env_config.get("mask", False)
     env = Knapsack(env_config)
@@ -65,7 +81,7 @@ def final_evaluation(agent, num_rollouts, env_config={}):
                 v_total += 1
             
             action = agent.get_action(obs)
-            print("Step {} --> Weight: {} | Value: {}".format(steps, env.item_weights[action], env.item_values[action]))
+            # print("Step {} --> Weight: {} | Value: {}".format(steps, env.item_weights[action], env.item_values[action]))
             path["lb_sum"].append(sum(path["lb"]) + env.item_weights[action])
             path["val_sum"].append(sum(path["val"]) + env.item_values[action])
             path["lb"].append(env.item_weights[action])
@@ -83,6 +99,23 @@ def final_evaluation(agent, num_rollouts, env_config={}):
 def expected_return(agent, num_rollouts, env_config={}, agent_type=None):
     """
     Used for final evaluation policy rollout
+    
+    Parameters:
+    -----------
+    agent : ga agent
+    num_rollouts : int
+        number of times to evaluate an agent
+    env_config : dict
+        environment configuration file
+    agent_type: str
+        ga or ppo(or None)
+    render : bool
+        Whether to render the rollout
+        
+    Returns
+    --------
+    - list: all evaluation rewards for each rollout
+    - path: the path taken by an agent
     """
     action_masking = env_config.get("mask", False)
     env = Knapsack(env_config)
@@ -124,9 +157,18 @@ def expected_return(agent, num_rollouts, env_config={}, agent_type=None):
 
 
 def main():
+    """
+    main function
+    """
+    #
+    # set up args
+    #
     args = get_args()
     train_time = []
     agent = None
+    #
+    # Train GA Agent
+    #
     # Randomly generated seeds for training
     rand_seeds = [4, 36, 27, 2, 98]  # --> for actually training
     # rand_seeds = [54]
@@ -196,13 +238,7 @@ def main():
     # Evaluate with action masking
     #
     # env_config = {"use_action_masking": True}
-    mask_eval_reward, mask_eval_time, mask_v_total, mask_v_eps = final_evaluation(agent.best_agent, args.num_eval_eps, env_config=env_config)
-    #
-    # Evaluate without action masking
-    #
-    # env_config.update({"use_action_masking":False})
-    # agent.best_agent.strategy = None
-    # norm_eval_reward, norm_eval_time, norm_v_total, norm_v_eps, norm_path = final_evaluation(agent.best_agent, args.num_eval_eps, env_config=env_config)
+    mask_eval_reward, mask_eval_time, mask_v_total, mask_v_eps, _ = final_evaluation(agent.best_agent, args.num_eval_eps, env_config=env_config)
     #
     # Save Data
     #
@@ -225,24 +261,18 @@ def main():
     }
     
     with open('results/knapsack_ga_masking_seeded_results-{}.pkl'.format(str(args.items)), 'wb') as f:
-            pickle.dump(data, f)
+        pickle.dump(data, f)
     #
     # Print Values
     #
     print("\n KNAPSACK GA TRAINING RESULTS")
     print("####################################")
     print("Average Time to Train: ", avg_train_time)
-    print("\n-----Evaluation WITH Action Masking-------")
+    print("\n-----Evaluation -------")
     print("Average Steps to Flag: ", mask_eval_time)
-    print("Average Evaluation Reward with Masking: ", mask_eval_reward)
-    print("Number of Safety Violations with Masking: ", mask_v_total)
-    print("Percentage of Safe Rollouts with Masking: {}%".format(mask_safe_rolls))
-    
-    # print("\n-----Evaluation WITHOUT Action Masking-------")
-    # print("Average Steps to Flag without Masking: ", norm_eval_time)
-    # print("Average Evaluation Reward without Masking: ", norm_eval_reward)
-    # print("Number of Safety Violations without Masking: ", norm_v_total)
-    # print("Percentage of Safe Rollouts without Masking: {}%".format(norm_safe_rolls))
+    print("Average Evaluation Reward: ", mask_eval_reward)
+    print("Number of Safety Violations: ", mask_v_total)
+    print("Percentage of Safe Rollouts: {}%".format(mask_safe_rolls))
 
         
     
