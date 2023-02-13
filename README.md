@@ -36,7 +36,7 @@ cd spga
 git checkout 61141e2
 ```
 
-### Option 1: Docker (recommended for ICCPS'23 AE) (~20 min.)
+### Docker (~20 min.)
 1. Build the Docker image
 ```bash
 sudo docker build . -t spga_image
@@ -46,23 +46,6 @@ sudo docker build . -t spga_image
 sudo docker run --name spga --rm -it spga_image bash
 ```
 
-### Option 2: Local Install (not recommended) (~40 min.)
-1. Create a conda environment
-```bash
-conda create -n spga python=3.9
-```
-2. Activate the conda environment
-```bash
-conda activate spga
-```
-3. Update setuptools
-```bash
-python -m pip install --upgrade setuptools
-```
-4. Install required packages **Note: Run 2x if issues; seems to fix issue**
-```bash
-python setup.py install
-```
 
 ## ICCPS '23 Artifact Evaluation
 This artifact is intended to reproduce each of the plots, figures, training, and testing results included in the corresponding ICCPS '23 paper. 
