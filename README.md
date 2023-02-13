@@ -8,14 +8,24 @@ This code base implements self-preserving genetic algorithms (SPGA) and safe rei
 The code base is structured as follows:
 ```bash
 .
-├── action_masking
-│   ├── cpole           # CartPole-v0
-│   ├── frolake         # FrozenLake-v1
-│   └── knapsack        # Knapsack-v0
-└── run_time_assurance
-    ├── cpole           # CartPole-v0
-    ├── frolake         # FrozenLake-v1
-    └── knapsack        # Knapsack-v0
+├── Dockerfile              # Dockerfile for environment
+├── README.md
+├── environment.yml         # conda environment file
+├── setup.py
+└── spga                    # artifiact reproduction directory
+    ├── artifacts           # Saving location for reproduced artifacts
+    │   └── logs
+    ├── generate_artifacts.sh       # SCRIPT TO REPRODUCE ALL ARTIFACTS
+    ├── generate_table_2.py
+    ├── generate_table_3.py
+    ├── action_masking      
+    │   ├── cpole           # CartPole-v0 Action Masking
+    │   ├── frolake         # FrozenLake-v1 Action Masking
+    │   └── knapsack        # Knapsack-v0 Action Masking
+    └── run_time_assurance
+        ├── cpole           # CartPole-v0 Run Time Assurance
+        ├── frolake         # FrozenLake-v1 Run Time Assurance
+        └── knapsack        # Knapsack-v0 Run Time Assurance
  ```
     
 ## Installation
@@ -25,7 +35,7 @@ git clone https://github.com/pkrobinette/spga.git
 cd spga
 ```
 
-### Option 1: Docker (recommended for ICCPS'23 AE)
+### Option 1: Docker (recommended for ICCPS'23 AE) (~5 min.)
 1. Build the Docker image
 ```bash
 sudo docker build . -t spga_image
@@ -61,7 +71,7 @@ The tables and figures reproduced in this artifiact evaluation are listed below.
 
 5. `Figure 4: Knapsack-v0 SPGA-RTA vs. SRL-RTA`
 
-### Instructions to Reproduce
+### Instructions to Reproduce (~4 min.)
 1. Navigate to the `spga.spga` directory. 
 ```bash
 cd spga
@@ -74,28 +84,33 @@ chmod +x generate_artifacts.sh
 ```bash
 ./generate_artifacts.sh
 ```
-4. Evaluate artifacts. All artifacts are saved in the `artifacts` directory.
+4. *(If Using Docker)* Pull artifacts the docker image.
 
-### Agent Training
+    a. Open a seperate window on your machine and navigate to the embedded sgpa folder. (spga.spga)
+    
+    b. Make the `retrieve.sh` script executable
+    ```bash
+    chmod +x retrieve.sh
+    ```
+    
+    c. Run the script
+    ```bash
+    ./retrieve.sh
+    ```
+    
+5. Evaluate reproduced artifacts.
 
+### Agent Training (~72 hrs.)
+To reproduce the training of each SPGA and SRL agent in their respective environment, navigate to the environment and method in question and run the `./train.sh` bash script. This will run the safe learning method for each version of that environment. Time to train is environment dependent. It takes approximately 72 hours to train all agents, for each environment, and each seed. Because the training can take a long time, the trained agents for each respective test seed (SEED 4) are provided in each directory. Seed implementations used in this work during training are automatically integrated into the code.
 
 ### Time Estimates
 *Note:* These are very rough estimates
-| Environment | Safe Learning Method | Time to Run File |
-|-------------|------------------|----------------------|
-|CartPole-v0  | SPGA                 |    < 10 min       |
-|CartPole-v0  | SRL                  |    < 20 min      |
-|FrozenLake-v1  | SPGA                 |    < 1 hr      |
-|FrozenLake-v1  | SRL                  |    <  4 hr      |
-|Knapsack-v0  | SPGA                 |    < 2 hr       |
-|FrozenLake-v1  | SRL                  |    <  7 hr      |
+| Command | Time to Run File |
+|-------------|------------------|
+|Dockerfile Setup  | ~5 min.  |
+|Reproduce Artifacts  | ~4 min. |
+|Train All Agents  | ~72 hrs. |
 
-
-### Agent Rollout Plots
-To reproduce the rollout plots shown in the graph, navigate to the respective directory and run the respective` *plot*.ipynb` file. For instance, if you want to reproduce the CartPole-v0 action masking plots, navigate to `action_masking` > `cpole` directory and run `plot_cpole_amask_rollouts.ipynb`. The time to plot is environment dependent. Each plot .ipynb, however, takes approximately less than 10 min. to run.
-
-### Agent Training (not necessary)
-To reproduce the training of each SPGA and SRL agent in their respective environment, navigate to the environment and method in question and run the `./train_spga.sh` or `./train_srl.sh` bash script. This will run the safe learning method for each version of that environment. Time to train is environment dependent. Estimates of total training time are shown below. Because the training can take a long time, the trained agents for each respective test seed (SEED 4) are provided in each directory. Seed implementations used in this work during training are automatically integrated into the code.
 
 ### Computational Resources
 These experiments were conducted on an 2.3 GHz 8-Core Intel Core i9 processor with 16 GB 2667 MHz DDR4 of memory.
