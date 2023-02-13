@@ -32,6 +32,7 @@ The code base is structured as follows:
 Clone this repository to your local machine.
 ```bash
 git clone https://github.com/pkrobinette/spga.git
+git checkout 
 cd spga
 ```
 
