@@ -10,7 +10,6 @@ The code base is structured as follows:
 .
 ├── Dockerfile              # Dockerfile for environment
 ├── README.md
-├── environment.yml         # conda environment file
 ├── setup.py
 └── spga                    # artifiact reproduction directory
     ├── artifacts           # Saving location for reproduced artifacts
