@@ -34,7 +34,7 @@ Clone this repository to your local machine.
 ```bash
 git clone https://github.com/pkrobinette/spga.git
 cd spga
-git checkout bb79869
+git checkout 3def500
 ```
 
 ### Option 1: Docker (recommended for ICCPS'23 AE) (~5 min.)
