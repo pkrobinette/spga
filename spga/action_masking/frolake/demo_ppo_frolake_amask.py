@@ -15,6 +15,10 @@ import matplotlib.pyplot as plt
 import pickle
 from train_ppo_frolake_amask import get_ppo_trainer, final_evaluation
 
+import sys
+sys.path.append(sys.path[0]+"/results")
+sys.path.append(sys.path[0]+"/trained_agents")
+sys.path.append(sys.path[0]+"/utils")
 
 def get_args():
     """
@@ -35,6 +39,9 @@ def get_args():
 
 
 def main():
+    """
+    main function
+    """
     args = get_args()
     #
     # Demo With Action Asking
@@ -52,16 +59,11 @@ def main():
     norm_eval_reward, norm_eval_time, norm_v_total, norm_v_eps, norm_traj = final_evaluation(agent, args.num_rollouts, env_config=env_config)
     
     
-    print("\n----- Demo With Masking -----")
-    print("Avg. Rollout Reward WITH Masking: ", mask_eval_reward)
-    print("Avg. Num of Steps WITH Masking: ", mask_eval_time)
-    print("Total Violations WITH Masking: ", mask_v_total)
-    print("Percentage of Safe Rollouts WITH Masking: {}%".format(100-(mask_v_eps/args.num_rollouts*100)))
-    print("\n------ Demo WITHOUT Masking ------")
-    print("Avg. Rollout Reward: ", norm_eval_reward)
-    print("Avg. Num of Steps: ", norm_eval_time)
-    print("Total Violations: ", norm_v_total)
-    print("Percentage of Safe Rollouts: {}%".format(100-(norm_v_eps/args.num_rollouts*100)))
+    print("\n----- Demo -----")
+    print("Avg. Rollout Reward: ", mask_eval_reward)
+    print("Avg. Num of Steps: ", mask_eval_time)
+    print("Total Violations: ", mask_v_total)
+    print("Percentage of Safe Rollouts: {}%".format(100-(mask_v_eps/args.num_rollouts*100)))
     
     #
     # Render Rollout
