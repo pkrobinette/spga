@@ -18,6 +18,7 @@ The code base is structured as follows:
     ├── generate_artifacts.sh       # SCRIPT TO REPRODUCE ALL ARTIFACTS
     ├── generate_table_2.py
     ├── generate_table_3.py
+    ├── retrieve.sh                 # SCRIPT TO RETRIEVE GENERATE ARTIFACTS
     ├── action_masking      
     │   ├── cpole           # CartPole-v0 Action Masking
     │   ├── frolake         # FrozenLake-v1 Action Masking
@@ -33,7 +34,7 @@ Clone this repository to your local machine.
 ```bash
 git clone https://github.com/pkrobinette/spga.git
 cd spga
-git checkout 622ded3
+git checkout bb79869
 ```
 
 ### Option 1: Docker (recommended for ICCPS'23 AE) (~5 min.)
