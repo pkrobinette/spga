@@ -47,7 +47,7 @@ sudo docker build . -t spga_image
 sudo docker run --name spga --rm -it spga_image bash
 ```
 
-### Option 2: Local Install
+### Option 2: Local Install (not recommended) (~40 min.)
 1. Create a conda environment
 ```bash
 conda create -n spga python=3.9
