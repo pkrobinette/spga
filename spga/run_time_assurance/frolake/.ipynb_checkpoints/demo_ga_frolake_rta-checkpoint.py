@@ -20,6 +20,11 @@ from train_ga_frolake_rta import final_evaluation
 from utils.ga_frolake_rta import Agent
 from utils.custom_rta_frolake import FrozenLake
 
+import sys
+sys.path.append(sys.path[0]+"/results")
+sys.path.append(sys.path[0]+"/trained_agents")
+sys.path.append(sys.path[0]+"/utils")
+
 def get_args():
     """
     Parse the command arguments
@@ -50,23 +55,12 @@ def main():
     agent.load("trained_agents/frolake_ga_rta_seed-{}_checkpoint-{}.json".format(args.seed, str(args.map.split("x")[0])))
     # agent.strategy = "action_masking"
     mask_eval_reward, mask_eval_time, mask_v_total, mask_v_eps, mask_path = final_evaluation(agent, args.num_rollouts, env_config)
-    #
-    # Demo Without Action Masking
-    #
-    # env_config.update({"use_action_masking": False})
-    # agent.strategy = None
-    # norm_eval_reward, norm_eval_time, norm_v_total, norm_v_eps, norm_path = final_evaluation(agent, args.num_rollouts, env_config)
     
-    print("\n----- Demo With Masking -----")
+    print("\n----- Demo  -----")
     print("Avg. num of steps to goal: ", mask_eval_time)
-    print("Avg. Rollout Reward WITH Masking: ", mask_eval_reward)
-    print("Total Violations WITH Masking: ", mask_v_total)
-    print("Percentage of Safe Rollouts WITH Masking: {}%".format(100-(mask_v_eps/args.num_rollouts*100)))
-    # print("\n------ Demo WITHOUT Masking ------")
-    # print("Avg. num steps to goal: ", norm_eval_time)
-    # print("Avg. Rollout Reward: ", norm_eval_reward)
-    # print("Total Violations: ", norm_v_total)
-    # print("Percentage of Safe Rollouts: {}%".format(100-(norm_v_eps/args.num_rollouts*100)))
+    print("Avg. Rollout Reward: ", mask_eval_reward)
+    print("Total Violations: ", mask_v_total)
+    print("Percentage of Safe Rollouts: {}%".format(100-(mask_v_eps/args.num_rollouts*100)))
     
     print()
     print()

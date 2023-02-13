@@ -15,6 +15,10 @@ import matplotlib.pyplot as plt
 import pickle
 from train_ppo_frolake_rta import get_ppo_trainer, final_evaluation
 
+import sys
+sys.path.append(sys.path[0]+"/results")
+sys.path.append(sys.path[0]+"/trained_agents")
+sys.path.append(sys.path[0]+"/utils")
 
 def get_args():
     """
@@ -47,11 +51,11 @@ def main():
     mask_eval_reward, mask_eval_time, mask_v_total, mask_v_eps, mask_path = final_evaluation(mask_agent, args.num_rollouts, env_config=mask_env_config)
     
     
-    print("\n----- Demo With RTA -----")
-    print("Avg. Rollout Reward WITH RTA: ", mask_eval_reward)
-    print("Avg. Num of Steps WITH RTA: ", mask_eval_time)
-    print("Total Violations WITH RTA: ", mask_v_total)
-    print("Percentage of Safe Rollouts WITH RTA: {}%".format(100-(mask_v_eps/args.num_rollouts*100)))
+    print("\n----- Demo  -----")
+    print("Avg. Rollout Reward: ", mask_eval_reward)
+    print("Avg. Num of Steps: ", mask_eval_time)
+    print("Total Violations: ", mask_v_total)
+    print("Percentage of Safe Rollouts: {}%".format(100-(mask_v_eps/args.num_rollouts*100)))
     
     #
     # Render Rollout

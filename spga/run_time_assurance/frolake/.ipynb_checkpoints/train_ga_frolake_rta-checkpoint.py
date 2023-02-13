@@ -1,8 +1,6 @@
 """
 Train genetic algorithm with action masking in FrozenLake.
 
-Notes
------
 
 """
 
@@ -15,6 +13,10 @@ import matplotlib.pyplot as plt
 import time
 import numpy as np
 import pickle
+
+import sys
+sys.path.append(sys.path[0]+"/results")
+sys.path.append(sys.path[0]+"/trained_agents")
 
 
 def get_args():
@@ -41,7 +43,22 @@ def get_args():
 
 def final_evaluation(agent, num_rollouts, env_config={}):
     """
-    Used for final evaluation policy rollout
+    Used for final evaluation policy rollout.
+    
+    Parameters:
+    -----------
+    agent : ga agent
+    num_rollouts : int
+        number of times to evaluate an agent
+    env_config : dict
+        environment configuration file
+        
+    Returns
+    --------
+    - mean of all eval rewards
+    - mean of all rollout times
+    - number of total violations
+    - number of episodes with at least one violation
     """
     action_masking = env_config.get("use_action_masking", False)
     env = FrozenLake(env_config)
@@ -83,6 +100,23 @@ def final_evaluation(agent, num_rollouts, env_config={}):
 def expected_return(agent, num_rollouts, env_config={}, agent_type=None, render=False):
     """
     Used for final evaluation policy rollout
+    
+    Parameters:
+    -----------
+    agent : ga agent
+    num_rollouts : int
+        number of times to evaluate an agent
+    env_config : dict
+        environment configuration file
+    agent_type: str
+        ga or ppo(or None)
+    render : bool
+        Whether to render the rollout
+        
+    Returns
+    --------
+    - list: all evaluation rewards for each rollout
+    - path: the path taken by an agent
     """
     action_masking = env_config.get("use_action_masking", False)
     env = FrozenLake(env_config)
@@ -126,10 +160,18 @@ def expected_return(agent, num_rollouts, env_config={}, agent_type=None, render=
 
 
 def main():
+    """
+    main function
+    """
+    #
+    # set up args
+    #
     args = get_args()
-    print(args.map)
     train_time = []
     agent = None
+    #
+    # Train GA Agent
+    #
     # Randomly generated seeds for training
     rand_seeds = [4, 36, 27, 2, 98]  # --> for actually training
     # rand_seeds = [24]
@@ -181,24 +223,18 @@ def main():
     }
     
     with open('results/frolake_ga_rta_seeded_results-{}.pkl'.format(str(args.map.split("x")[0])), 'wb') as f:
-            pickle.dump(data, f)
+        pickle.dump(data, f)
     #
     # Print Values
     #
     print("\n FROLAKE GA TRAINING RESULTS")
     print("####################################")
     print("Average Time to Train: ", avg_train_time)
-    print("\n-----Evaluation WITH RTA-------")
+    print("\n-----Evaluation-------")
     print("Average Steps to Flag: ", mask_eval_time)
-    print("Average Evaluation Reward with RTA: ", mask_eval_reward)
-    print("Number of Safety Violations with RTA: ", mask_v_total)
-    print("Percentage of Safe Rollouts with RTA: {}%".format(mask_safe_rolls))
-    
-    print("\n-----Evaluation WITHOUT RTA-------")
-    print("Average Steps to Flag without RTA: ", norm_eval_time)
-    print("Average Evaluation Reward without RTA: ", norm_eval_reward)
-    print("Number of Safety Violations without RTA: ", norm_v_total)
-    print("Percentage of Safe Rollouts without RTA: {}%".format(norm_safe_rolls))
+    print("Average Evaluation Reward: ", mask_eval_reward)
+    print("Number of Safety Violations: ", mask_v_total)
+    print("Percentage of Safe Rollouts: {}%".format(mask_safe_rolls))
 
     #
     # Render Rollout

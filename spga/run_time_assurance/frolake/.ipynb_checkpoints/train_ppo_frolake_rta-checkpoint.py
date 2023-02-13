@@ -24,8 +24,9 @@ import os
 from os.path import isdir, join, isfile
 import shutil
 
-# time to train, average of 100 rollouts, avg. episode length of 100 rollouts
-
+import sys
+sys.path.append(sys.path[0]+"/results")
+sys.path.append(sys.path[0]+"/trained_agents")
 
 
 def get_args():
@@ -105,6 +106,24 @@ def get_ppo_trainer(args= None):
 
 
 def final_evaluation(trainer, n_final_eval, env_config={}):
+    """
+    Used for final evaluation policy rollout.
+    
+    Parameters:
+    -----------
+    trainer : ppo agent
+    n_final_eval : int
+        number of times to evaluate an agent
+    env_config : dict
+        environment configuration file
+        
+    Returns
+    --------
+    - mean of all eval rewards
+    - mean of all rollout times
+    - number of total violations
+    - number of episodes with at least one violation
+    """
     action_masking = env_config.get("use_action_masking", False)
     env = FrozenLake(env_config)
     eval_rewards = []
@@ -144,6 +163,9 @@ def final_evaluation(trainer, n_final_eval, env_config={}):
 
 
 def main():
+    """
+    main function
+    """
     #
     # Setup and seeds
     #
@@ -224,15 +246,10 @@ def main():
     #
     print("Average Time to Train: ", avg_train_time)
     print("\n-----Evaluation WITH RTA-------")
-    print("Average Evaluation Reward with RTA: ", mask_eval_reward)
-    print("Number of Safety Violations with RTA: ", mask_v_total)
-    print("Percentage of Safe Rollouts with RTA: {}%".format(mask_safe_rolls))
-    print("Average Steps with Masking: ", mask_eval_time)
-    print("\n-----Evaluation WITHOUT RTA-------")
-    print("Average Evaluation Reward without RTA: ", norm_eval_reward)
-    print("Number of Safety Violations without RTA: ", norm_v_total)
-    print("Percentage of Safe Rollouts without RTA: {}%".format(norm_safe_rolls))
-    print("Average Steps without RTA: ", norm_eval_time)
+    print("Average Evaluation Reward: ", mask_eval_reward)
+    print("Number of Safety Violations: ", mask_v_total)
+    print("Percentage of Safe Rollouts: {}%".format(mask_safe_rolls))
+    print("Average Steps: ", mask_eval_time)
     #
     # Save Training Data and Agent
     #
@@ -251,7 +268,7 @@ def main():
         "avg_ep_reward": avg_ep_reward,
     }
     with open('results/frolake_ppo_rta_seeded_results-{}.pkl'.format(str(args.map.split("x")[0])), 'wb') as f:
-            pickle.dump(data, f)
+        pickle.dump(data, f)
             
             
     #
