@@ -1,6 +1,6 @@
 # MacFiles
 .DS_Store
 .ipynb_checkpoints
-**/**/**/**/__pycache__/
-**/**/**/**/.ipynb_checkpoints/
-**/**/**/**/.DS_Store/
+**/__pycache__/
+**/.ipynb_checkpoints/
+**/.DS_Store/
