@@ -8,14 +8,24 @@ This code base implements self-preserving genetic algorithms (SPGA) and safe rei
 The code base is structured as follows:
 ```bash
 .
-├── action_masking
-│   ├── cpole           # CartPole-v0
-│   ├── frolake         # FrozenLake-v1
-│   └── knapsack        # Knapsack-v0
-└── run_time_assurance
-    ├── cpole           # CartPole-v0
-    ├── frolake         # FrozenLake-v1
-    └── knapsack        # Knapsack-v0
+├── Dockerfile              # Dockerfile for environment
+├── README.md
+├── environment.yml         # conda environment file
+├── setup.py
+└── spga                    # artifiact reproduction directory
+    ├── artifacts           # Saving location for reproduced artifacts
+    │   └── logs
+    ├── generate_artifacts.sh       # SCRIPT TO REPRODUCE ALL ARTIFACTS
+    ├── generate_table_2.py
+    ├── generate_table_3.py
+    ├── action_masking      
+    │   ├── cpole           # CartPole-v0 Action Masking
+    │   ├── frolake         # FrozenLake-v1 Action Masking
+    │   └── knapsack        # Knapsack-v0 Action Masking
+    └── run_time_assurance
+        ├── cpole           # CartPole-v0 Run Time Assurance
+        ├── frolake         # FrozenLake-v1 Run Time Assurance
+        └── knapsack        # Knapsack-v0 Run Time Assurance
  ```
     
 ## Installation
@@ -25,7 +35,7 @@ git clone https://github.com/pkrobinette/spga.git
 cd spga
 ```
 
-### Option 1: Docker (recommended for ICCPS'23 AE)
+### Option 1: Docker (recommended for ICCPS'23 AE) (~5 min.)
 1. Build the Docker image
 ```bash
 sudo docker build . -t spga_image
@@ -61,7 +71,7 @@ The tables and figures reproduced in this artifiact evaluation are listed below.
 
 5. `Figure 4: Knapsack-v0 SPGA-RTA vs. SRL-RTA`
 
-### Instructions to Reproduce
+### Instructions to Reproduce ()
 1. Navigate to the `spga.spga` directory. 
 ```bash
 cd spga
