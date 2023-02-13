@@ -50,11 +50,19 @@ sudo docker run --name spga --rm -it spga_image bash
 ### Option 2: Local Install
 1. Create a conda environment
 ```bash
-conda env create -f environment.yml
+conda create -n spga python=3.9
 ```
 2. Activate the conda environment
 ```bash
 conda activate spga
+```
+3. Update setuptools
+```bash
+python -m pip install --upgrade setuptools
+```
+4. Install required packages
+```bash
+python setup.py install
 ```
 
 ## ICCPS '23 Artifact Evaluation
