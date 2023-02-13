@@ -32,8 +32,8 @@ The code base is structured as follows:
 Clone this repository to your local machine.
 ```bash
 git clone https://github.com/pkrobinette/spga.git
-git checkout 5d12d14
 cd spga
+git checkout 5d12d14
 ```
 
 ### Option 1: Docker (recommended for ICCPS'23 AE) (~5 min.)
