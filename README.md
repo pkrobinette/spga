@@ -86,7 +86,7 @@ chmod +x generate_artifacts.sh
 ```
 4. *(If Using Docker)* Pull artifacts the docker image.
 
-    a. Open a seperate window on your machine and navigate to the embedded sgpa folder. (spga.spga)
+    a. Open a seperate window on your local machine and navigate to the embedded sgpa folder. (spga.spga)
     
     b. Make the `retrieve.sh` script executable
     ```bash
