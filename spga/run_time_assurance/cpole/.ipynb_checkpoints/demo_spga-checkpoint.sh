@@ -1,1 +1,0 @@
-python demo_ga_cpole_rta.py --num_rollouts 500 --seed 4
