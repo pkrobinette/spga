@@ -20,6 +20,11 @@ from train_ga_knapsack_rta import final_evaluation
 from utils.ga_masking import Agent
 from utils.custom_knapsack import Knapsack
 
+import sys
+sys.path.append(sys.path[0]+"/results")
+sys.path.append(sys.path[0]+"/trained_agents")
+sys.path.append(sys.path[0]+"/utils")
+
 def get_args():
     """
     Parse the command arguments
@@ -38,7 +43,23 @@ def get_args():
 
 def final_evaluation(agent, num_rollouts, env_config={}):
     """
-    Used for final evaluation policy rollout
+    Used for final evaluation policy rollout.
+    
+    Parameters:
+    -----------
+    trainer : ppo agent
+    n_final_eval : int
+        number of times to evaluate an agent
+    env_config : dict
+        environment configuration file
+        
+    Returns
+    --------
+    - mean of all eval rewards
+    - mean of all rollout times
+    - number of total violations
+    - number of episodes with at least one violation
+    - path
     """
     action_masking = env_config.get("mask", False)
     env = Knapsack(env_config)
@@ -78,6 +99,9 @@ def final_evaluation(agent, num_rollouts, env_config={}):
     return np.mean(eval_rewards), np.mean(eval_time), v_total, v_eps, path
 
 def main():
+    """
+    main function
+    """
     args = get_args()
     # assert seed is a valid entry
     assert (args.seed in [98, 4, 36, 27, 2]),"Not a valid training seed"
@@ -145,11 +169,11 @@ def main():
     # agent.strategy = "action_masking"
     mask_eval_reward, mask_eval_time, mask_v_total, mask_v_eps, path = final_evaluation(agent, args.num_rollouts, env_config)
     
-    print("\n----- Demo With RTA -----")
+    print("\n----- Demo -----")
     print("Avg. num of steps to goal: ", mask_eval_time)
-    print("Avg. Rollout Reward WITH RTA: ", mask_eval_reward)
-    print("Total Violations WITH RTA: ", mask_v_total)
-    print("Percentage of Safe Rollouts WITH RTA: {}%".format(100-(mask_v_eps/args.num_rollouts*100)))
+    print("Avg. Rollout Reward: ", mask_eval_reward)
+    print("Total Violations: ", mask_v_total)
+    print("Percentage of Safe Rollouts: {}%".format(100-(mask_v_eps/args.num_rollouts*100)))
     
     
     

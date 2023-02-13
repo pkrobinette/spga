@@ -16,6 +16,11 @@ import pickle
 from train_ppo_knapsack_rta import get_ppo_trainer
 
 
+import sys
+sys.path.append(sys.path[0]+"/results")
+sys.path.append(sys.path[0]+"/trained_agents")
+sys.path.append(sys.path[0]+"/utils")
+
 def get_args():
     """
     Parse the command arguments
@@ -27,13 +32,32 @@ def get_args():
     parser.add_argument("--render", choices=('True','False'), help="Render the rollout")
     parser.add_argument("--strategy", default="runtime")
     parser.add_argument("--items", type=int, default=5, help="The items in the Knapsack")
-    parser.add_argument("--seed", type=int, default=36, help="Indicate the training seed")
+    parser.add_argument("--seed", type=int, default=4, help="Indicate the training seed")
     args = parser.parse_args()
     args.render = True if args.render == 'True' else False
 
     return args
 
 def final_evaluation(trainer, n_final_eval, env_config={}):
+    """
+    Used for final evaluation policy rollout.
+    
+    Parameters:
+    -----------
+    trainer : ppo agent
+    n_final_eval : int
+        number of times to evaluate an agent
+    env_config : dict
+        environment configuration file
+        
+    Returns
+    --------
+    - mean of all eval rewards
+    - mean of all rollout times
+    - number of total violations
+    - number of episodes with at least one violation
+    - path
+    """
     action_masking = env_config.get("mask", False)
     env = Knapsack(env_config)
     eval_rewards = []
@@ -71,6 +95,9 @@ def final_evaluation(trainer, n_final_eval, env_config={}):
 
 
 def main():
+    """
+    main function
+    """
     args = get_args()
     #
     # Demo With Action Asking
@@ -81,11 +108,11 @@ def main():
     mask_eval_reward, mask_eval_time, mask_v_total, mask_v_eps, path = final_evaluation(mask_agent, args.num_rollouts, env_config=mask_env_config)
     
     
-    print("\n----- Demo With RTA -----")
-    print("Avg. Rollout Reward WITH RTA: ", mask_eval_reward)
-    print("Avg. Num of Steps WITH RTA: ", mask_eval_time)
-    print("Total Violations WITH RTA: ", mask_v_total)
-    print("Percentage of Safe Rollouts WITH RTA: {}%".format(100-(mask_v_eps/args.num_rollouts*100)))
+    print("\n----- Demo -----")
+    print("Avg. Rollout Reward: ", mask_eval_reward)
+    print("Avg. Num of Steps: ", mask_eval_time)
+    print("Total Violations: ", mask_v_total)
+    print("Percentage of Safe Rollouts: {}%".format(100-(mask_v_eps/args.num_rollouts*100)))
     
     
     
