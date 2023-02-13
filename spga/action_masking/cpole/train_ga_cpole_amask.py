@@ -1,9 +1,6 @@
 """
 Train genetic algorithm with action masking in CartPole-v0.
 
-Notes
------
-
 """
 
 from utils.ga_masking import Generation
@@ -14,6 +11,10 @@ import matplotlib.pyplot as plt
 import time
 import numpy as np
 import pickle
+
+import sys
+sys.path.append(sys.path[0]+"/results")
+sys.path.append(sys.path[0]+"/trained_agents")
 
 
 def get_args():
@@ -39,15 +40,33 @@ def get_args():
 
 def final_evaluation(agent, num_rollouts, env_config={}):
     """
-    Used for final evaluation policy rollout
+    Used for final evaluation policy rollout.
+    
+    Parameters:
+    -----------
+    agent : ga agent
+    num_rollouts : int
+        number of times to evaluate an agent
+    env_config : dict
+        environment configuration file
+        
+    Returns
+    --------
+    - mean of all eval rewards
+    - mean of all rollout times
+    - number of total violations
+    - number of episodes with at least one violation
     """
+    # set up the environment
     action_masking = env_config.get("use_action_masking", False)
     env = CartPole(env_config)
     eval_rewards = []
     eval_time = []
     v_total = 0
     v_eps = 0
-    
+    #
+    # Rollout the agent
+    #
     for _ in range(num_rollouts):
         safe = True
         steps = 0
@@ -72,15 +91,26 @@ def final_evaluation(agent, num_rollouts, env_config={}):
                 eval_rewards.append(r)
                 eval_time.append(steps)
                 break
-    
+    #
+    # Return information
+    #
     return np.mean(eval_rewards), np.mean(eval_time), v_total, v_eps
 
 
 
 def main():
+    """
+    Main function for training
+    """
+    #
+    # Set up training
+    #
     args = get_args()
     train_time = []
     agent = None
+    #
+    # Train the agent for each seed
+    #
     # Randomly generated seeds for training
     rand_seeds = [4, 36, 27, 2, 98]
     for i in range(args.num_trials):
@@ -95,10 +125,7 @@ def main():
         #
         # Save the agent
         #
-        if args.extend:
-            agent.best_agent.save("trained_agents/cartpole_ga_masking_seed-{}_extended_checkpoint-{}".format(str(args.seed), abs(args.x_thresh)))
-        else:
-            agent.best_agent.save("trained_agents/cartpole_ga_masking_seed-{}_checkpoint-{}".format(str(args.seed), abs(args.x_thresh)))
+        agent.best_agent.save("trained_agents/cartpole_ga_masking_seed-{}_checkpoint-{}".format(str(args.seed), abs(args.x_thresh)))
     #
     # Evaluate with action masking
     #
@@ -130,28 +157,19 @@ def main():
         "ep_reward": agent.best_fitness,
         "avg_ep_reward": agent.avg_fitness_history,
     }
-    if args.extend:
-        with open('results/cpole_ga_masking_seeded_extended_results-{}.pkl'.format(abs(args.x_thresh)), 'wb') as f:
-            pickle.dump(data, f)
-    else:
-        with open('results/cpole_ga_masking_seeded_results-{}.pkl'.format(abs(args.x_thresh)), 'wb') as f:
-            pickle.dump(data, f)
+    with open('results/cpole_ga_masking_seeded_results-{}.pkl'.format(abs(args.x_thresh)), 'wb') as f:
+        pickle.dump(data, f)
     #
     # Print Values
     #
     print("\n GA TRAINING RESULTS")
     print("####################################")
     print("Average Time to Train: ", avg_train_time)
-    print("\n-----Evaluation WITH Action Masking-------")
-    print("Average Evaluation Reward with Masking: ", mask_eval_reward)
-    print("Number of Safety Violations with Masking: ", mask_v_total)
-    print("Percentage of Safe Rollouts with Masking: {}%".format(mask_safe_rolls))
-    print("Average Rollout Episode Length with Masking: ", mask_eval_time)
-    print("\n-----Evaluation WITHOUT Action Masking-------")
-    print("Average Evaluation Reward without Masking: ", norm_eval_reward)
-    print("Number of Safety Violations without Masking: ", norm_v_total)
-    print("Percentage of Safe Rollouts without Masking: {}%".format(norm_safe_rolls))
-    print("Average Rollout Episode Length without Masking: ", norm_eval_time)
+    print("\n-----Evaluation -------")
+    print("Average Evaluation Reward: ", mask_eval_reward)
+    print("Number of Safety Violations: ", mask_v_total)
+    print("Percentage of Safe Rollouts: {}%".format(mask_safe_rolls))
+    print("Average Rollout Episode Length: ", mask_eval_time)
         
         
     

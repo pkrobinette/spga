@@ -15,6 +15,11 @@ import matplotlib.pyplot as plt
 import pickle
 from train_ppo_cpole_amask import get_ppo_trainer
 
+import sys
+sys.path.append(sys.path[0]+"/results")
+sys.path.append(sys.path[0]+"/trained_agents")
+sys.path.append(sys.path[0]+"/utils")
+
 
 def get_args():
     """
@@ -91,11 +96,11 @@ def main():
     mask_agent.restore("trained_agents/seed_{}/{}/{}".format(args.seed, name, name))
     mask_eval_reward, mask_eval_time, mask_v_total, mask_v_eps, mask_traj = rollout(mask_agent, pts=init_pts, env_config=mask_env_config, render=args.render)
     
-    print("\n----- Demo With Masking -----")
-    print("Avg. Rollout Reward WITH Masking: ", mask_eval_reward)
-    print("Avg. Rollout Time WITH Masking: ", mask_eval_time)
-    print("Total Violations WITH Masking: ", mask_v_total)
-    print("Percentage of Safe Rollouts WITH Masking: {}%".format(100-(mask_v_eps/args.num_rollouts*100)))
+    print("\n----- Demo -----")
+    print("Avg. Rollout Reward: ", mask_eval_reward)
+    print("Avg. Rollout Time: ", mask_eval_time)
+    print("Total Violations: ", mask_v_total)
+    print("Percentage of Safe Rollouts: {}%".format(100-(mask_v_eps/args.num_rollouts*100)))
     
     
 if __name__ == "__main__":

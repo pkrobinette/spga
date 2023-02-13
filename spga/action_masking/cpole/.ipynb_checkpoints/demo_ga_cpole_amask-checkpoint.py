@@ -9,6 +9,11 @@ import pickle
 from train_ga_cpole_amask import final_evaluation
 from utils.ga_masking import Agent
 
+import sys
+sys.path.append(sys.path[0]+"/results")
+sys.path.append(sys.path[0]+"/trained_agents")
+sys.path.append(sys.path[0]+"/utils")
+
 def get_args():
     """
     Parse the command arguments
@@ -36,11 +41,11 @@ def main():
     agent.strategy = "action_masking"
     mask_eval_reward, mask_eval_time, mask_v_total, mask_v_eps = final_evaluation(agent, args.num_rollouts, env_config)
     
-    print("\n----- Demo With Masking -----")
-    print("Avg. Rollout Reward WITH Masking: ", mask_eval_reward)
-    print("Avg. Rollout Time WITH Masking: ", mask_eval_time)
-    print("Total Violations WITH Masking: ", mask_v_total)
-    print("Percentage of Safe Rollouts WITH Masking: {}%".format(100-(mask_v_eps/args.num_rollouts*100)))
+    print("\n----- Demo  -----")
+    print("Avg. Rollout Reward: ", mask_eval_reward)
+    print("Avg. Rollout Time: ", mask_eval_time)
+    print("Total Violations: ", mask_v_total)
+    print("Percentage of Safe Rollouts: {}%".format(100-(mask_v_eps/args.num_rollouts*100)))
     
     
 if __name__ == "__main__":
